@@ -9,6 +9,9 @@ import { Title } from "../primitives/title";
 import { Container } from "./styled/container";
 import { Content } from "./styled/content";
 import { Footer } from "./styled/footer";
+import { useContext } from "react";
+import { SocketContext } from "../../context/socket";
+import { CardEvent } from "../../common/enums/enums";
 
 type Props = {
   card: Card;
@@ -17,6 +20,12 @@ type Props = {
 };
 
 export const CardItem = ({ card, isDragging, provided }: Props) => {
+  const socket = useContext(SocketContext);
+
+  const handleDeleteCard = () => {
+    socket.emit(CardEvent.DELETE, { cardId: card.id });
+  };
+
   return (
     <Container
       className="card-container"
@@ -32,7 +41,7 @@ export const CardItem = ({ card, isDragging, provided }: Props) => {
         <Title onChange={() => {}} title={card.name} fontSize="large" isBold />
         <Text text={card.description} onChange={() => {}} />
         <Footer>
-          <DeleteButton onClick={() => {}} />
+          <DeleteButton onClick={handleDeleteCard} />
           <Splitter />
           <CopyButton onClick={() => {}} />
         </Footer>

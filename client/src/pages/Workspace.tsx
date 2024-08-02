@@ -21,7 +21,9 @@ export const Workspace = () => {
 
   useEffect(() => {
     socket.emit(ListEvent.GET, (lists: List[]) => setLists(lists));
-    socket.on(ListEvent.UPDATE, (lists: List[]) => setLists(lists));
+    socket.on(ListEvent.UPDATE, (lists: List[]) => 
+      setLists(lists));
+    
 
     return () => {
       socket.removeAllListeners(ListEvent.UPDATE).close();
@@ -63,7 +65,11 @@ export const Workspace = () => {
       destinationIndex: destination.index,
     });
   };
-
+  //
+  // const handleCreateList = (name:string) => {
+  //   const newList = {name: 'New List', cards: [] };
+    
+  // };
   return (
     <React.Fragment>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -84,7 +90,7 @@ export const Workspace = () => {
                 />
               ))}
               {provided.placeholder}
-              <ColumnCreator onCreateList={() => {}} />
+              <ColumnCreator onCreateList={()=>{}} />
             </Container>
           )}
         </Droppable>
