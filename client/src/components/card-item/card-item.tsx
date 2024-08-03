@@ -21,11 +21,6 @@ type Props = {
 
 export const CardItem = ({ card, isDragging, provided }: Props) => {
   const socket = useContext(SocketContext);
-
-  const handleDeleteCard = () => {
-    socket.emit(CardEvent.DELETE, { cardId: card.id });
-  };
-
   return (
     <Container
       className="card-container"
@@ -38,10 +33,30 @@ export const CardItem = ({ card, isDragging, provided }: Props) => {
       aria-label={card.name}
     >
       <Content>
-        <Title onChange={() => {}} title={card.name} fontSize="large" isBold />
-        <Text text={card.description} onChange={() => {}} />
+        <Title
+          onChange={(newText) => {
+            socket.emit(CardEvent.RENAME, { cardId: card.id, newText });
+          }}
+          title={card.name}
+          fontSize="large"
+          isBold
+        />
+        <Text
+          text={card.description}
+          onChange={(newText) => {
+            socket.emit(CardEvent.CHANGE_DESCRIPTION, {
+              cardId: card.id,
+              newText,
+              isDescription: true,
+            });
+          }}
+        />
         <Footer>
-          <DeleteButton onClick={handleDeleteCard} />
+          <DeleteButton
+            onClick={() => {
+              socket.emit(CardEvent.DELETE, card.id);
+            }}
+          />
           <Splitter />
           <CopyButton onClick={() => {}} />
         </Footer>

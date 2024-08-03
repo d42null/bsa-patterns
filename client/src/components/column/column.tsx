@@ -14,7 +14,7 @@ import { Container } from "./styled/container";
 import { Header } from "./styled/header";
 import { useContext } from "react";
 import { SocketContext } from "../../context/socket";
-import { ListEvent } from "../../common/enums/enums";
+import { CardEvent, ListEvent } from "../../common/enums/enums";
 
 type Props = {
   listId: string;
@@ -54,7 +54,7 @@ export const Column = ({ listId, listName, cards, index }: Props) => {
             <DeleteButton color="#FFF0" onClick={handleDeleteList} />
           </Header>
           <CardsList listId={listId} listType="CARD" cards={cards} />
-          <Footer onCreateCard={() => {}} listId={listId}/>
+          <Footer onCreateCard={(name) => {socket.emit(CardEvent.CREATE,listId, name );}} listId={listId}/>
         </Container>
       )}
     </Draggable>
