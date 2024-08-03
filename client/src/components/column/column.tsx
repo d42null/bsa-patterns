@@ -45,7 +45,7 @@ export const Column = ({ listId, listName, cards, index }: Props) => {
             <Title
               aria-label={listName}
               title={listName}
-              onChange={() => {}}
+              onChange={(newName) => {socket.emit(ListEvent.RENAME, { listId, newName});}}
               fontSize="large"
               width={200}
               isBold
