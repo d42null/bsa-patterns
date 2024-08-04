@@ -1,8 +1,10 @@
 import type { Socket } from "socket.io";
-
+import { randomUUID } from "crypto";
 import { CardEvent } from "../common/enums/enums";
 import { Card } from "../data/models/card";
 import { SocketHandler } from "./socket.handler";
+import { cloneDeep } from "lodash";
+import { logger, LogLevel } from "../services/logger";
 
 class CardHandler extends SocketHandler {
   public handleConnection(socket: Socket): void {
@@ -17,7 +19,7 @@ class CardHandler extends SocketHandler {
   public createCard(listId: string, cardName: string): void {
     const newCard = new Card(cardName, "");
     const lists = this.db.getData();
-
+    logger.log(LogLevel.Info, `Card created: ${JSON.stringify(newCard)}`);
     const updatedLists = lists.map((list) =>
       list.id === listId ? list.setCards(list.cards.concat(newCard)) : list
     );
@@ -52,7 +54,9 @@ class CardHandler extends SocketHandler {
     const lists = this.db.getData();
     lists.forEach((list) => {
       const index = list.cards.findIndex((card) => card.id === cardId);
-      if (index !== -1) list.cards.splice(index, 1);
+      if (index !== -1) {list.cards.splice(index, 1);
+        logger.log(LogLevel.Info, `Card deleted: ${cardId}`);
+      }
     });
     this.updateLists();
   }
@@ -65,17 +69,21 @@ class CardHandler extends SocketHandler {
     lists.forEach((list) => {
       const card = list.cards.find((card) => card.id === data.cardId);
       if (card)
-        if (data.isDescription) card.description = data.newText;
-        else card.name = data.newText;
+        if (data.isDescription) {card.description = data.newText;
+          logger.log(LogLevel.Info, `Card description changed: ${JSON.stringify(data)}`);
+        }
+        else{ card.name = data.newText; logger.log(LogLevel.Info, `Card renamed: ${JSON.stringify(data)}`);}
     });
     this.updateLists();
   }
+  // PATTERN: Prototype
   private duplicateCard(cardId: string) {
     const lists = this.db.getData();
     lists.forEach((list) => {
       const originalCard = list.cards.find((card) => card.id === cardId);
-      if (originalCard)
-        list.cards.push(new Card(originalCard.name, originalCard.description));
+      if (originalCard) {list.cards.push(originalCard.lodashClone());
+        logger.log(LogLevel.Info, `Card duplicated: ${JSON.stringify(originalCard)}`);
+      }
     });
     this.updateLists();
   }

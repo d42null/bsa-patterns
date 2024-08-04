@@ -3,6 +3,7 @@ import type { Socket } from "socket.io";
 import { ListEvent } from "../common/enums/enums";
 import { List } from "../data/models/list";
 import { SocketHandler } from "./socket.handler";
+import { logger,LogLevel } from "../services/logger";
 
 class ListHandler extends SocketHandler {
   public handleConnection(socket: Socket): void {
@@ -31,6 +32,7 @@ class ListHandler extends SocketHandler {
   private createList(name: string): void {
     const lists = this.db.getData();
     const newList = new List(name);
+    logger.log(LogLevel.Info, `List created: ${JSON.stringify(newList)}`);
     this.db.setData(lists.concat(newList));
     this.updateLists();
   }
@@ -38,6 +40,7 @@ class ListHandler extends SocketHandler {
     const lists = this.db.getData();
     const index = lists.findIndex((list) => list.id === listId);
     if (index !== -1) {
+      logger.log(LogLevel.Info, `List deleted: ${listId}`);
       lists.splice(index, 1);
       this.updateLists();
     }
@@ -46,6 +49,7 @@ class ListHandler extends SocketHandler {
     const lists = this.db.getData();
     const list = lists.find((list) => list.id === data.listId);
     if (list) {list.name = data.newName;
+      logger.log(LogLevel.Info, `List renamed: ${JSON.stringify(data)}`);
       this.updateLists();
     }
   }
