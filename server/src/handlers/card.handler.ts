@@ -11,6 +11,7 @@ class CardHandler extends SocketHandler {
     socket.on(CardEvent.DELETE, this.deleteCard.bind(this));
     socket.on(CardEvent.RENAME, this.changeCardText.bind(this));
     socket.on(CardEvent.CHANGE_DESCRIPTION, this.changeCardText.bind(this));
+    socket.on(CardEvent.DUPLICATE, this.duplicateCard.bind(this));
   }
 
   public createCard(listId: string, cardName: string): void {
@@ -66,6 +67,15 @@ class CardHandler extends SocketHandler {
       if (card)
         if (data.isDescription) card.description = data.newText;
         else card.name = data.newText;
+    });
+    this.updateLists();
+  }
+  private duplicateCard(cardId: string) {
+    const lists = this.db.getData();
+    lists.forEach((list) => {
+      const originalCard = list.cards.find((card) => card.id === cardId);
+      if (originalCard)
+        list.cards.push(new Card(originalCard.name, originalCard.description));
     });
     this.updateLists();
   }

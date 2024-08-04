@@ -58,7 +58,7 @@ export const CardItem = ({ card, isDragging, provided }: Props) => {
             }}
           />
           <Splitter />
-          <CopyButton onClick={() => {}} />
+          <CopyButton onClick={() => { socket.emit(CardEvent.DUPLICATE, card.id);}} />
         </Footer>
       </Content>
     </Container>
