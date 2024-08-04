@@ -3,7 +3,7 @@ import type { Socket } from "socket.io";
 import { ListEvent } from "../common/enums/enums";
 import { List } from "../data/models/list";
 import { SocketHandler } from "./socket.handler";
-import { logger,LogLevel } from "../services/logger";
+import { logger, LogLevel } from "../services/logger";
 
 class ListHandler extends SocketHandler {
   public handleConnection(socket: Socket): void {
@@ -48,7 +48,8 @@ class ListHandler extends SocketHandler {
   private renameList(data: { listId: string; newName: string }): void {
     const lists = this.db.getData();
     const list = lists.find((list) => list.id === data.listId);
-    if (list) {list.name = data.newName;
+    if (list) {
+      list.name = data.newName;
       logger.log(LogLevel.Info, `List renamed: ${JSON.stringify(data)}`);
       this.updateLists();
     }

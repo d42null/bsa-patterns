@@ -6,8 +6,7 @@ import { Database } from "./data/database";
 import { CardHandler, ListHandler } from "./handlers/handlers";
 import { ReorderService } from "./services/reorder.service";
 import { logger, LogLevel } from "./services/logger";
-// import { Observer } from "./paterns/observer";
-// import { logToConsole, logToFile } from "./loggers";
+
 
 const PORT = 3005;
 

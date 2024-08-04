@@ -46,7 +46,6 @@ class ConsoleErrorSubscriber implements LogSubscriber {
   }
 }
 
-// Initialize logger and subscribers
 const logger = Logger.getInstance();
 const fileSubscriber = new FileLogSubscriber();
 const consoleErrorSubscriber = new ConsoleErrorSubscriber();

@@ -25,10 +25,6 @@ type Props = {
 
 export const Column = ({ listId, listName, cards, index }: Props) => {
   const socket = useContext(SocketContext);
-
-  const handleDeleteList = () => {
-    socket.emit(ListEvent.DELETE, listId );
-  };
   return (
     <Draggable draggableId={listId} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -45,16 +41,28 @@ export const Column = ({ listId, listName, cards, index }: Props) => {
             <Title
               aria-label={listName}
               title={listName}
-              onChange={(newName) => {socket.emit(ListEvent.RENAME, { listId, newName});}}
+              onChange={(newName) => {
+                socket.emit(ListEvent.RENAME, { listId, newName });
+              }}
               fontSize="large"
               width={200}
               isBold
             />
             <Splitter />
-            <DeleteButton color="#FFF0" onClick={handleDeleteList} />
+            <DeleteButton
+              color="#FFF0"
+              onClick={() => {
+                socket.emit(ListEvent.DELETE, listId);
+              }}
+            />
           </Header>
           <CardsList listId={listId} listType="CARD" cards={cards} />
-          <Footer onCreateCard={(name) => {socket.emit(CardEvent.CREATE,listId, name );}} listId={listId}/>
+          <Footer
+            onCreateCard={(name) => {
+              socket.emit(CardEvent.CREATE, listId, name);
+            }}
+            listId={listId}
+          />
         </Container>
       )}
     </Draggable>

@@ -2,63 +2,54 @@ import type { DraggableLocation } from "@hello-pangea/dnd";
 
 import { type Card, type List } from "../common/types/types";
 
-export const reorderService = {
-  reorderLists(items: List[], startIndex: number, endIndex: number): List[] {
-    const [removed] = items.splice(startIndex, 1);
-    items.splice(endIndex, 0, removed);
+export const reorderLists = (
+  items: List[],
+  startIndex: number,
+  endIndex: number
+): List[] => moveItem(items, startIndex, endIndex);
 
-    return items;
-  },
+export const reorderCards = (
+  lists: List[],
+  source: DraggableLocation,
+  destination: DraggableLocation
+): List[] => {
+  const sourceList = lists.find((list) => list.id === source.droppableId);
+  const destList = lists.find((list) => list.id === destination.droppableId);
+  if (!sourceList || !destList) return lists;
 
-  reorderCards(
-    lists: List[],
-    source: DraggableLocation,
-    destination: DraggableLocation
-  ): List[] {
-    const current: Card[] =
-      lists.find((list) => list.id === source.droppableId)?.cards || [];
-    const next: Card[] =
-      lists.find((list) => list.id === destination.droppableId)?.cards || [];
-    const target: Card = current[source.index];
+  const targetCard = sourceList.cards[source.index];
+  const isMovingInSameList = source.droppableId === destination.droppableId;
 
-    const isMovingInSameList = source.droppableId === destination.droppableId;
-
-    if (isMovingInSameList) {
-      const [removed] = current.splice(source.index, 1);
-      current.splice(destination.index, 0, removed);
-      const reordered: Card[] = current;
-
-      return lists.map((list) =>
-        list.id === source.droppableId ? { ...list, cards: reordered } : list
-      );
+  const newLists = lists.map((list) => {
+    if (list.id === source.droppableId) {
+      const updatedCards = isMovingInSameList
+        ? moveItem(sourceList.cards, source.index, destination.index)
+        : removeItem(sourceList.cards, source.index);
+      return { ...list, cards: updatedCards };
     }
 
-    const newLists = lists.map((list) => {
-      if (list.id === source.droppableId) {
-        return {
-          ...list,
-          cards: this.removeCardFromList(current, source.index),
-        };
-      }
+    if (list.id === destination.droppableId && !isMovingInSameList) {
+      return {
+        ...list,
+        cards: addItem(destList.cards, destination.index, targetCard),
+      };
+    }
 
-      if (list.id === destination.droppableId) {
-        return {
-          ...list,
-          cards: this.addCardToList(next, destination.index, target),
-        };
-      }
+    return list;
+  });
 
-      return list;
-    });
-
-    return newLists;
-  },
-
-  removeCardFromList(cards: Card[], index: number): Card[] {
-    return cards.slice(0, index).concat(cards.slice(index + 1));
-  },
-
-  addCardToList(cards: Card[], index: number, card: Card): Card[] {
-    return cards.slice(0, index).concat(card).concat(cards.slice(index));
-  },
+  return newLists;
 };
+
+const moveItem = <T>(array: T[], fromIndex: number, toIndex: number): T[] => {
+  const item = array[fromIndex];
+  const newArray = array.filter((_, index) => index !== fromIndex);
+  newArray.splice(toIndex, 0, item);
+  return newArray;
+};
+
+const removeItem = <T>(array: T[], index: number): T[] =>
+  array.slice(0, index).concat(array.slice(index + 1));
+
+const addItem = <T>(array: T[], index: number, item: T): T[] =>
+  array.slice(0, index).concat(item).concat(array.slice(index));

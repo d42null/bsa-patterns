@@ -17,7 +17,7 @@ class Card {
     this.id = randomUUID();
   }
   public clone():Card {
-    return { ...this, createdAt: new Date(), id: randomUUID() };
+    return new Card(this.name+' copy', this.description);
   }
   public lodashClone():Card {
     const clonedCard = cloneDeep(this);
