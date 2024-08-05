@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import type { DroppableProvided } from '@hello-pangea/dnd';
 import { Droppable } from '@hello-pangea/dnd';
 

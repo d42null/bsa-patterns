@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { DroppableProvided } from '@hello-pangea/dnd';
 
 import { type Card } from '../../../common/types/types';

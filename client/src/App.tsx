@@ -1,3 +1,4 @@
+import React from 'react';
 import { socket, SocketContext } from './context/socket';
 import { Workspace } from './pages/Workspace';
 

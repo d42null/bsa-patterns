@@ -9,7 +9,7 @@ import { Title } from '../primitives/title';
 import { Container } from './styled/container';
 import { Content } from './styled/content';
 import { Footer } from './styled/footer';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { SocketContext } from '../../context/socket';
 import { CardEvent } from '../../common/enums/enums';
 

@@ -23,6 +23,7 @@ const reorderService = new ReorderService();
 const reorderServiceProxy = new Proxy(reorderService, {
   get(target, property) {
     const origMethod = target[property as keyof ReorderService];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (...args: any[]) => {
       logger.log(
         LogLevel.Info,

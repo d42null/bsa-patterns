@@ -1,3 +1,4 @@
+import React from 'react';
 import Add from '../../assets/icons/add.svg?react';
 import Copy from '../../assets/icons/copy.svg?react';
 import Delete from '../../assets/icons/delete.svg?react';

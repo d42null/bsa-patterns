@@ -1,6 +1,6 @@
 import type { DraggableLocation } from '@hello-pangea/dnd';
 
-import { type Card, type List } from '../common/types/types';
+import { type List } from '../common/types/types';
 
 export const reorderLists = (
   items: List[],

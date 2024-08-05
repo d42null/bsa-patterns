@@ -1,5 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useComponentVisible } from '../../hooks/useComponentVisible';
 import { BasicTitle } from './styled/basic-title';
 import { TitleContainer } from './styled/title-container';

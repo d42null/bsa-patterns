@@ -1,9 +1,7 @@
 import type { Socket } from 'socket.io';
-import { randomUUID } from 'crypto';
 import { CardEvent } from '../common/enums/enums';
 import { Card } from '../data/models/card';
 import { SocketHandler } from './socket.handler';
-import { cloneDeep } from 'lodash';
 import { logger, LogLevel } from '../services/logger';
 
 class CardHandler extends SocketHandler {
