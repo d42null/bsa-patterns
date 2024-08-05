@@ -5,7 +5,7 @@ enum LogLevel {
   Warning = 'warning',
   Error = 'error',
 }
-  // PATTERN: Observer
+// PATTERN: Observer
 class Logger {
   private static instance: Logger;
   private subscribers: LogSubscriber[] = [];

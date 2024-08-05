@@ -2,17 +2,17 @@ import type {
   DraggableLocation,
   DroppableProvided,
   DropResult,
-} from "@hello-pangea/dnd";
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import React, { useContext, useEffect, useState } from "react";
+} from '@hello-pangea/dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { CardEvent, ListEvent } from "../common/enums/enums";
-import { type List } from "../common/types/types";
-import { Column } from "../components/column/column";
-import { ColumnCreator } from "../components/column-creator/column-creator";
-import { SocketContext } from "../context/socket";
-import { reorderCards, reorderLists } from "../services/reorder.service";
-import { Container } from "./styled/container";
+import { CardEvent, ListEvent } from '../common/enums/enums';
+import { type List } from '../common/types/types';
+import { Column } from '../components/column/column';
+import { ColumnCreator } from '../components/column-creator/column-creator';
+import { SocketContext } from '../context/socket';
+import { reorderCards, reorderLists } from '../services/reorder.service';
+import { Container } from './styled/container';
 
 export const Workspace = () => {
   const [lists, setLists] = useState<List[]>([]);
@@ -22,7 +22,6 @@ export const Workspace = () => {
   useEffect(() => {
     socket.emit(ListEvent.GET, (lists: List[]) => setLists(lists));
     socket.on(ListEvent.UPDATE, (lists: List[]) => setLists(lists));
-
     return () => {
       socket.removeAllListeners(ListEvent.UPDATE).close();
     };
@@ -44,7 +43,7 @@ export const Workspace = () => {
       return;
     }
 
-    const isReorderLists = result.type === "COLUMN";
+    const isReorderLists = result.type === 'COLUMN';
 
     if (isReorderLists) {
       setLists(reorderLists(lists, source.index, destination.index));

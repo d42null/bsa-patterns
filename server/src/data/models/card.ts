@@ -1,5 +1,5 @@
-import { randomUUID } from "crypto";
-import { cloneDeep } from "lodash";
+import { randomUUID } from 'crypto';
+import { cloneDeep } from 'lodash';
 
 class Card {
   public id: string;
@@ -16,12 +16,12 @@ class Card {
     this.createdAt = new Date();
     this.id = randomUUID();
   }
-  public clone():Card {
-    return new Card(this.name+' copy', this.description);
+  public clone(): Card {
+    return new Card(this.name + ' copy', this.description);
   }
-  public lodashClone():Card {
+  public lodashClone(): Card {
     const clonedCard = cloneDeep(this);
-    clonedCard.name=clonedCard.name+' copy';
+    clonedCard.name = clonedCard.name + ' copy';
     clonedCard.id = randomUUID();
     clonedCard.createdAt = new Date();
     return clonedCard;
